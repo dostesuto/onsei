@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Web Speech API Sample</title>
+</head>
+<body>
+    <h1>音声認識サンプル</h1>
+    <button id="start">音声認識を開始</button>
+    <p id="result">結果: <span id="transcript"></span></p>
+
+    <script>
+        const startButton = document.getElementById('start');
+        const transcriptDisplay = document.getElementById('transcript');
+
+        // 音声認識オブジェクトを作成
+        const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+        recognition.lang = 'ja-JP'; // 日本語に設定
+        recognition.interimResults = false; // 中間結果を無効にする
+
+        // 結果を受け取るイベント
+        recognition.onresult = (event) => {
+            const transcript = event.results[0][0].transcript;
+            transcriptDisplay.textContent = transcript; // 結果を表示
+        };
+
+        // エラー処理
+        recognition.onerror = (event) => {
+            console.error('Error occurred in recognition: ', event.error);
+        };
+
+        // ボタンをクリックしたときに音声認識を開始
+        startButton.onclick = () => {
+            recognition.start();
+        };
+    </script>
+</body>
+</html>
